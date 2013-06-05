@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/themes/base/css")
+        @Scripts.Render("~/bundles/modernizr")
+        
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")
+        <script src="~/Scripts/TimePicker/jquery-ui-timepicker-addon.js"></script>
+        <link href="~/Scripts/TimePicker/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+        <script src="~/Scripts/really-simple-color-picker-master/jquery.colorPicker.min.js"></script>
+        <link href="~/Scripts/really-simple-color-picker-master/colorPicker.css" rel="stylesheet" />
+        <script src="~/Scripts/Site.js"></script>
+
+
+    </head>
+    <body>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
+                </div>
+                <div class="float-right">
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+                    <nav>
+                        <ul id="menu">
+                            <li id="a"><a href="/Sortable/index.html">Sortable</a></li>
+                            <li id="t">@Html.ActionLink("Radio Test", "CreateAccount", "Test")</li>
+                            <li id="scheduleMenuItem">@Html.ActionLink("Schedule", "Index", "ScheduleGroup")</li>
+                            <li id="contentMenuItem">@Html.ActionLink("Content", "Index", "ContentGroup")</li>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Master"))
+                            {
+                                <li>@Html.ActionLink("User", "Index", "User")</li>
+                                <li>@Html.ActionLink("App Update", "Index", "AppUpdate")</li>
+                            }
+
+                            
+                            @*                            <li>@Html.ActionLink("Company", "Index", "Company")</li>
+                            <li>@Html.ActionLink("Role", "Index", "Role")</li>
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <div id="body" style="width:950px; margin: 0 auto; border-top: solid red 1px;padding-top: 5px;">
+            @RenderSection("featured", required: false)
+            <div style="width:200px; background-color: #fff; float: left; overflow: auto ">
+                <section id="leftMenu">
+                    @{
+                        var controller = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+                        var action = HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
+                        //if (controller == "ScheduleGroup" || controller == "DefaultSetting" || controller == "Terminal" || controller == "User")
+                        //{
+                          //  @Html.Action("_tree", "ScheduleGroup")
+                        //}
+                        //else 
+                        if (controller == "ContentGroup" || controller == "Contents")
+                        {
+                            @Html.Action("_tree", "ContentGroup")
+                        }
+                        else if (controller == "Schedule" && (action == "Edit" || action == "Create"))
+                        {
+                            @Html.Action("_tree", "ContentGroup")
+                        }
+                        else if (controller == "Account")
+                        {
+                            // Nothing
+                        }
+                        else
+                        {
+                            @Html.Action("_tree", "ScheduleGroup")
+  
+                        }
+                        }
+                </section>
+            </div>
+            <div style="margin-left:5px; padding: 5px; float: left;background-color: #fff;  width: 735px; min-height: 200px; ">
+                <section class="content-wrapper main-content clear-fix">
+                    @RenderBody()
+                </section>
+            </div>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+                </div>
+            </div>
+        </footer>
+        <script type="text/javascript">
+            
+        </script>
+        @RenderSection("scripts", required: false)
+    </body>
+</html>
